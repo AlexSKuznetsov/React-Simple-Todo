@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
-import Todo from '../Todo'
+import Todo from '../Todo';
+import { useDispatch } from 'react-redux';
+import { addTask } from '../Redux/action/todo-action';
 
 function TodoList() {
+  const dispatch = useDispatch();
   const [task, setTask] = useState('');
 
-  function addTodo(event) {
+  async function addTodo(event) {
+    console.log(task);
     event.preventDefault();
+    const response = await fetch('/api/todos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ taskName: task }),
+    });
+    const result = await response.json();
+    dispatch(addTask(task, result._id));
     setTask('');
   }
 
@@ -32,7 +43,7 @@ function TodoList() {
           </small>
         </div>
         <button type="submit" className="btn btn-primary mb-4">
-          Добавить
+          Add task
         </button>
       </form>
       <Todo />

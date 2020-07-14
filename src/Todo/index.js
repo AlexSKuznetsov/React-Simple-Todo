@@ -1,62 +1,73 @@
 import React, { useEffect, useState } from 'react';
-import Loader from '../Loader'
+import Loader from '../Loader';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  deleteTask,
+  completeTask,
+  load,
+} from '../Redux/action/todo-action';
+import EditTask from '../EditTodo';
 
 function Todo() {
-  const [todos, setTodos] = useState([]);
-  const [loader, setLoader] = useState(true);
+  const dispatch = useDispatch();
+
+  const todos = useSelector((state) => state.todos);
+  const loading = useSelector((state) => state.loading);
+  const error = useSelector((state) => state.error);
 
   useEffect(() => {
-    (async () => {
-      console.log(loader)
-      const response = await fetch('/api/todos');
-      const json = await response.json();
-      setTodos(json);
-      setLoader(false);
-      console.log(loader)
-    })();
-  }, [setTodos, loader]);
-  function deleteTaskFunc(e) {
+    dispatch(load());
+  }, [dispatch]);
+
+  async function deleteTaskFunc(e) {
+    const { id } = e.target;
     e.preventDefault();
+    await fetch('/api/todos', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    });
+    dispatch(deleteTask(id));
   }
 
-  function checkTask(e) {
-    console.log(e.target.id);
+  async function checkTask(e) {
+    const { id, checked } = e.target;
+    await fetch('/api/todos', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, status: checked }),
+    });
+    dispatch(completeTask(id));
   }
 
   return (
     <>
-      {loader && <Loader />}
+      {loading && <Loader />}
       <ul className=" list-group">
         {todos.length > 0 &&
           todos.map((el) => (
-            <li className="d-flex list-group-item" key={el.id}>
+            <li className="d-flex list-group-item align-items-center" key={el._id}>
               <span className="flex-grow-1">{el.taskName}</span>
+              <EditTask id={el._id} text={el.taskName}/>
               <button
-                id={el.id}
-                type="button"
-                className="btn btn-outline-info btn-sm mr-3"
-              >
-                Редактировать
-              </button>
-              <button
-                id={el.id}
+                id={el._id}
                 onClick={deleteTaskFunc}
                 type="button"
-                className="btn btn-outline-danger btn-sm"
+                className="btn btn-outline-danger btn-sm ml-2"
               >
-                Удалить
+                Delete
               </button>
               <div className="form-check ml-4">
                 <input
-                  id={el.id}
-                  onClick={checkTask}
+                  id={el._id}
+                  onChange={checkTask}
                   className="form-check-input"
                   type="checkbox"
                   value=""
                   checked={el.isComplete}
                 />
                 <label className="form-check-label" htmlFor="defaultCheck1">
-                  Выполнено
+                  Done
                 </label>
               </div>
             </li>
