@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { editTask } from '../Redux/action/todo-action';
+import { edit } from '../Redux/action/todo-action';
 
 function EditTodo({ id, text }) {
   const dispatch = useDispatch();
@@ -14,13 +14,7 @@ function EditTodo({ id, text }) {
 
   // Edit task function
   async function editTaskFunc(e) {
-    const response = await fetch('/api/todos', {
-      method: 'PATCH',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({id, taskName:task})
-    });
-    const result = await response.json();
-    dispatch(editTask(result._id, task));
+    dispatch(edit(id, task))
     handleClose();
   }
 

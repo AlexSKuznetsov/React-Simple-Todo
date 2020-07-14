@@ -61,6 +61,15 @@ export function loadingFaild(err) {
   }
 }
 
+export function editTask(id, taskName) {
+  return {
+    type: EDIT_TASK,
+    id,
+    taskName,
+  };
+}
+
+// thunk middleware
 export function load() {
   return async (dispatch) => {
     dispatch(loadingStarted());
@@ -75,10 +84,15 @@ export function load() {
   }
 }
 
-export function editTask(id, taskName) {
-  return {
-    type: EDIT_TASK,
-      id,
-      taskName
+// thunk middleware
+export function edit(id, task) {
+  return async (dispatch) => {
+        const response = await fetch('/api/todos', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, taskName: task }),
+        });
+        await response.json();
+        dispatch(editTask(id, task));
   }
 }
