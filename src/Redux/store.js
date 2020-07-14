@@ -3,7 +3,10 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import TodoReducer from './reducers/todos-reducer';
 // import initialState from './initialState';
 import reduxThunk from 'redux-thunk'
+// import saga
 import reduxSaga from 'redux-saga';
+import { all } from 'redux-saga/effects';
+import todoSaga from '../Redux/todoSaga';
 
 // create redux-saga
 const sagaMiddleWare = reduxSaga()
@@ -23,7 +26,15 @@ const store = createStore(TodoReducer, initialState, composeWithDevTools(
 );
 
 // run saga middlware -it will be listen all action and distpatch them
-// sagaMiddleWare.run();
+ sagaMiddleWare.run(
+    function* () {
+      yield all(  
+        [
+          todoSaga()
+        ]
+        )
+      }
+);
 
 // subscribe function
 store.subscribe(() => {

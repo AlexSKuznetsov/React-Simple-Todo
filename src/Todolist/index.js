@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import Todo from '../Todo';
 import { useDispatch } from 'react-redux';
-import { addTask } from '../Redux/action/todo-action';
+import { callAddTask } from '../Redux/action/todo-action';
 
 function TodoList() {
   const dispatch = useDispatch();
   const [task, setTask] = useState('');
 
   async function addTodo(event) {
-    console.log(task);
+    console.log(task)
     event.preventDefault();
-    const response = await fetch('/api/todos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ taskName: task }),
-    });
-    const result = await response.json();
-    dispatch(addTask(task, result._id));
+    // const response = await fetch('/api/todos', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ taskName: task }),
+    // });
+    // const result = await response.json();
+    dispatch(callAddTask(task));
     setTask('');
   }
 

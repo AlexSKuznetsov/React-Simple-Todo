@@ -4,6 +4,7 @@ import {
   DELETE_TASK,
   ADD_ALL,
   EDIT_TASK,
+  CALL_ADD_TASK,
   LOADING_STARTED,
   LOADING_COMPLETE,
   LOADING_FAILED,
@@ -17,6 +18,13 @@ export function addTask(taskName, id) {
     isComplete: false,
     id,
   };
+}
+
+export function callAddTask(name) {
+  return {
+    type: CALL_ADD_TASK,
+    name,
+  }
 }
 
 export function completeTask(id) {
