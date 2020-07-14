@@ -4,6 +4,7 @@ export const DELETE_TASK = 'DELETE_TASK';
 export const ADD_ALL = 'ADD_ALL';
 export const EDIT_TASK = 'EDIT_TASK';
 
+// To saga watcher
 export const CALL_ADD_TASK = 'CALL_ADD_TASK';
 
 export const LOADING_STARTED = 'LOADING_STARTED';

@@ -1,5 +1,5 @@
 import {takeEvery, put, call } from 'redux-saga/effects'
-import { CALL_ADD_TASK, ADD_TASK } from './action/action-types';
+import { CALL_ADD_TASK } from './action/action-types';
 import {addTask} from './action/todo-action'
 
 // async function

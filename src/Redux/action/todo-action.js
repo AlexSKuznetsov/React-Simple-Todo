@@ -20,6 +20,7 @@ export function addTask(taskName, id) {
   };
 }
 
+// action creater to saga
 export function callAddTask(name) {
   return {
     type: CALL_ADD_TASK,
