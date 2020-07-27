@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react';
 import Loader from '../Loader';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  deleteTask,
-  completeTask,
-  load,
-} from '../Redux/action/todo-action';
+import { deleteTask, completeTask, load } from '../Redux/action/todo-action';
 import EditTask from '../EditTodo';
 
 function Todo() {
@@ -47,11 +43,14 @@ function Todo() {
     <>
       {loading && <Loader />}
       <ul className=" list-group">
-        {todos.length > 0 &&
+        {todos &&
           todos.map((el) => (
-            <li className="d-flex list-group-item align-items-center" key={el._id}>
+            <li
+              className="d-flex list-group-item align-items-center"
+              key={el._id}
+            >
               <span className="flex-grow-1">{el.taskName}</span>
-              <EditTask id={el._id} text={el.taskName}/>
+              <EditTask id={el._id} text={el.taskName} />
               <button
                 id={el._id}
                 onClick={deleteTaskFunc}
